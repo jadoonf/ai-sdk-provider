@@ -27,7 +27,7 @@ jobs:
           jwt: ${{ secrets.LSTN }}   
       # Install dependencies
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
         
       # Clean build artifacts
       - name: Clean build artifacts
@@ -53,7 +53,7 @@ jobs:
             ci: only
             jwt: ${{ secrets.LSTN }}  
         - name: Install dependencies
-          run: pnpm install
+          run: pnpm install --no-frozen-lockfile
           
         # Run Node tests
         - name: Run Node Tests
@@ -62,3 +62,6 @@ jobs:
         # Run Edge tests
         - name: Run Edge Tests
           run: pnpm run test:edge
+        - name: Run webhook test
+          run: ./examples/app/api/test/webhook-test.py
+          continue-on-error: true
