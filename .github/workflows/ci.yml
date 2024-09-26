@@ -1,0 +1,67 @@
+name: CI for AI SDK Provider
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Clean
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: listen.dev Scan
+        uses: listendev/action@v0.11
+        with:
+          ci: only
+          jwt: ${{ secrets.LSTN }}   
+      # Install dependencies
+      - name: Install dependencies
+        run: pnpm install
+        
+      # Clean build artifacts
+      - name: Clean build artifacts
+        run: pnpm run clean
+        
+      # Build project
+      - name: Build project
+        run: pnpm run build
+
+  test:
+      name: Test Code
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v3
+          
+        - name: Set up Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+        - name: listen.dev Scan
+          uses: listendev/action@v0.11
+          with:
+            ci: only
+            jwt: ${{ secrets.LSTN }}  
+        - name: Install dependencies
+          run: pnpm install
+          
+        # Run Node tests
+        - name: Run Node Tests
+          run: pnpm run test:node
+          
+        # Run Edge tests
+        - name: Run Edge Tests
+          run: pnpm run test:edge
