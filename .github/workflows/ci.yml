@@ -20,11 +20,14 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+          
       - name: listen.dev Scan
         uses: listendev/action@v0.11
         with:
           ci: only
-          jwt: ${{ secrets.LSTN }}   
+          jwt: ${{ secrets.LSTN }} 
+          argus_version: v0.0
+          
       # Install dependencies
       - name: Install dependencies
         run: pnpm install
@@ -47,11 +50,12 @@ jobs:
         - uses: pnpm/action-setup@v4
           with:
             version: 9
-        - name: listen.dev Scan
-          uses: listendev/action@v0.11
+        - uses: listendev/action@v0.11
           with:
             ci: only
-            jwt: ${{ secrets.LSTN }}  
+            jwt: ${{ secrets.LSTN }} 
+            argus_version: v0.0
+          
         - name: Install dependencies
           run: pnpm install
           
